@@ -8,8 +8,8 @@ import sys
 
 sys.setrecursionlimit(10**6)
 
-# file_name = "../test_data/oh_the_larceny_another_level.wav"
-file_name = "../test_data/the_fat_rat_xenogenesis.wav"
+# file_name, out_name = "../test_data/oh_the_larceny_another_level.wav", "another_level"
+file_name, out_name = "../test_data/the_fat_rat_xenogenesis.wav", "xenogenesis"
 
 source = AudioSource(file_name, AudioParams(bpm=145))
 
@@ -32,19 +32,17 @@ white_file = ffmpeg.input("../test_data/white.mp4")['v']
 black_file = ffmpeg.input("../test_data/black.mp4")['v']
 
 white_file = white_file.split()
-
-inputs.append(white_file[0])
-white_file = white_file[1].split()
 black_file = black_file.split()
 
 for i in range(1, len(beats)):
-    black_duration = int(beats[i]) - int(beats[i-1]) - 1
-
-    trimmed = black_file[0].trim(start_frame=0, end_frame=black_duration)
-    inputs.append(trimmed)
-    inputs.append(white_file[0])
-    white_file = white_file[1].split()
-    black_file = black_file[1].split()
+    beats[i] -= 3
+    duration = beats[i] - beats[i-1]
+    if i % 2 == 1:
+        inputs.append(white_file[0].trim(start_frame=0, end_frame=duration))
+        white_file = white_file[1].split()
+    else:
+        inputs.append(black_file[0].trim(start_frame=0, end_frame=duration))
+        black_file = black_file[1].split()
 
 joined = None
 
@@ -55,4 +53,4 @@ for i in range(len(inputs)):
     else:
         joined = ffmpeg.concat(joined, inputs[i].split()[0])
 
-ffmpeg.output(joined, audio, "beats.mp4").run()
+ffmpeg.output(joined, audio, "beats_" + out_name + ".mp4").run()

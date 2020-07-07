@@ -7,6 +7,7 @@ class BeatAnalyzer:
     def __init__(self, source: AudioSource):
         self.source: AudioSource = source
 
+    '''
     def analyze(self, beat_threshold: int = 80) -> np.ndarray:
         modified_signal = []
         samples_per_beat = 60 * self.source.params.sampling_rate // self.source.params.bpm
@@ -32,3 +33,14 @@ class BeatAnalyzer:
 
         # beat_frames = [x - 4*44100/30 for x in beat_frames]
         return np.multiply(np.array(beat_frames), group_size)
+    '''
+    def analyze(self, beat_threshold: int = 17000) -> np.ndarray:
+        beat_frames = [0]
+        samples_per_beat = 60 * self.source.params.sampling_rate / self.source.params.bpm
+        for i in range(1, len(self.source.signal)):
+            # if abs(self.waveform_array[i] - self.waveform_array[i-1]) > self.difference_threshold:
+            if i - beat_frames[len(beat_frames) - 1] > samples_per_beat and abs(self.source.signal[i]) > beat_threshold:
+                beat_frames.append(i)
+
+        # beat_frames = [x - 4*44100/30 for x in beat_frames]
+        return np.array(beat_frames)
