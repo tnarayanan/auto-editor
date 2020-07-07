@@ -3,8 +3,11 @@ from auto_editor.source.video_params import VideoParams
 
 
 class VideoSource:
-    def __init__(self, video_path: str):
+    def __init__(self, video_path: str, params: VideoParams):
         self.input = ffmpeg.input(video_path)
+        self.params: VideoParams = params
+
+        self.set_to_video_params(params)
 
     def trim(self, start: int, end: int) -> None:
         v = self.input.video.filter('trim', start=start, end=end)
