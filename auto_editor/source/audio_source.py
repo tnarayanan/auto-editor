@@ -10,7 +10,7 @@ class AudioSource:
         self.audio = wave.open(self.audio_path, 'r')
         self.sampling_rate = self.audio.getframerate()
 
-    def get_waveform(self) -> list:
+    def get_waveform(self) -> np.ndarray:
         signal = self.audio.readframes(-1)
         signal = np.frombuffer(signal, dtype='int16')
         signal = signal[1::2]
