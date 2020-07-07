@@ -8,8 +8,8 @@ import sys
 
 sys.setrecursionlimit(10**6)
 
-# file_name, out_name = "../test_data/oh_the_larceny_another_level.wav", "another_level"
-file_name, out_name = "../test_data/the_fat_rat_xenogenesis.wav", "xenogenesis"
+file_name, out_name = "../test_data/oh_the_larceny_another_level.wav", "another_level"
+# file_name, out_name = "../test_data/the_fat_rat_xenogenesis.wav", "xenogenesis"
 
 source = AudioSource(file_name, AudioParams(bpm=145))
 
