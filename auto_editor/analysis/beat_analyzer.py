@@ -46,7 +46,7 @@ class BeatAnalyzer:
         return np.array(beat_frames)
 
     def analyze_simple_on_beat(self, beat_threshold: float = 0.53) -> np.ndarray:
-        beat_frames = []
+        beat_frames = [0]
         samples_per_beat = int(60 * self.source.params.sampling_rate / self.source.params.bpm)
         window_width = samples_per_beat//3
 

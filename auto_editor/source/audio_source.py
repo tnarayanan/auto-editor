@@ -1,5 +1,6 @@
 import wave
 import numpy as np
+import ffmpeg
 import matplotlib.pyplot as plt
 from auto_editor.source.audio_params import AudioParams
 
@@ -9,14 +10,19 @@ class AudioSource:
         self.audio_path = audio_path
         self.params = params
 
-        self.audio = wave.open(self.audio_path, 'r')
-        self.params.sampling_rate = self.audio.getframerate()
+        self.audio_wav = wave.open(self.audio_path, 'r')
+        self.audio = ffmpeg.input(audio_path).audio
+        self.params.sampling_rate = self.audio_wav.getframerate()
         print("sampling rate: ", self.params.sampling_rate)
 
         self.signal = self.get_signal()
 
+    def trim(self, start: int, end: int) -> None:
+        a = self.audio.filter('atrim', start_sample=start, end_sample=end)
+        self.audio = a
+
     def get_signal(self) -> np.ndarray:
-        signal = self.audio.readframes(-1)
+        signal = self.audio_wav.readframes(-1)
         signal = np.frombuffer(signal, dtype='int16')
         signal = signal[1::2]
 
