@@ -17,3 +17,4 @@ env.bak/
 venv.bak/
 
 auto_editor/tests/*.mp4
+auto_editor/test_data/*.wav

@@ -15,7 +15,6 @@ class AudioSource:
 
         self.signal = self.get_signal()
 
-
     def get_signal(self) -> np.ndarray:
         signal = self.audio.readframes(-1)
         signal = np.frombuffer(signal, dtype='int16')
@@ -23,7 +22,7 @@ class AudioSource:
 
         signal = np.copy(signal)
         signal = signal / np.max(np.abs(signal))
-        signal *= (1 / signal.max())
+        # signal *= (1 / signal.max())
 
         return signal
 
